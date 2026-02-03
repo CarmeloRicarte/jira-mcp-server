@@ -1,5 +1,7 @@
 # Jira MCP Server
 
+[![npm version](https://badge.fury.io/js/%40carmeloricarte%2Fjira-mcp-server.svg)](https://www.npmjs.com/package/@carmeloricarte/jira-mcp-server)
+
 A Model Context Protocol (MCP) server for Jira Cloud that enables AI assistants to interact with Jira issues.
 
 ## Features
@@ -13,16 +15,22 @@ A Model Context Protocol (MCP) server for Jira Cloud that enables AI assistants 
 
 ## Prerequisites
 
-- [Bun](https://bun.sh/) runtime
+- [Node.js](https://nodejs.org/) 18+ **or** [Bun](https://bun.sh/) runtime
 - Jira Cloud account with API access
 - API token from [Atlassian API Tokens](https://id.atlassian.com/manage-profile/security/api-tokens)
 
 ## Installation
 
+The easiest way to use this MCP server is via `npx` or `bunx` - no installation required! Just configure your MCP client as shown below.
+
+If you prefer to install globally:
+
 ```bash
-git clone <repo-url>
-cd jira-mcp-server
-bun install
+# Using npm
+npm install -g @carmeloricarte/jira-mcp-server
+
+# Using Bun
+bun install -g @carmeloricarte/jira-mcp-server
 ```
 
 ## Environment Variables
@@ -39,38 +47,21 @@ bun install
 
 ## MCP Client Configuration
 
+> **Note:** All examples below use `npx` (Node.js). If you prefer Bun, replace `"command": "npx"` with `"command": "bunx"` and remove the `"-y"` from args.
+
 ### Claude Code
 
 **Config file location:**
 - **macOS/Linux:** `~/.claude/settings.json`
 - **Windows:** `%USERPROFILE%\.claude\settings.json`
 
-**macOS/Linux:**
 ```json
 {
   "mcpServers": {
-    "Jira": {
+    "jira": {
       "type": "stdio",
-      "command": "bun",
-      "args": ["run", "/Users/youruser/path/to/jira-mcp-server/src/index.ts"],
-      "env": {
-        "JIRA_HOST": "your-company.atlassian.net",
-        "JIRA_EMAIL": "your-email@example.com",
-        "JIRA_API_TOKEN": "your-api-token"
-      }
-    }
-  }
-}
-```
-
-**Windows:**
-```json
-{
-  "mcpServers": {
-    "Jira": {
-      "type": "stdio",
-      "command": "bun",
-      "args": ["run", "C:/dev/mcps/jira-mcp-server/src/index.ts"],
+      "command": "npx",
+      "args": ["-y", "@carmeloricarte/jira-mcp-server"],
       "env": {
         "JIRA_HOST": "your-company.atlassian.net",
         "JIRA_EMAIL": "your-email@example.com",
@@ -89,32 +80,13 @@ bun install
 - **macOS/Linux:** `~/.vscode/mcp.json` or workspace `.vscode/mcp.json`
 - **Windows:** `%USERPROFILE%\.vscode\mcp.json` or workspace `.vscode\mcp.json`
 
-**macOS/Linux:**
 ```json
 {
   "servers": {
     "jira": {
       "type": "stdio",
-      "command": "bun",
-      "args": ["run", "/Users/youruser/path/to/jira-mcp-server/src/index.ts"],
-      "env": {
-        "JIRA_HOST": "your-company.atlassian.net",
-        "JIRA_EMAIL": "your-email@example.com",
-        "JIRA_API_TOKEN": "your-api-token"
-      }
-    }
-  }
-}
-```
-
-**Windows:**
-```json
-{
-  "servers": {
-    "jira": {
-      "type": "stdio",
-      "command": "bun",
-      "args": ["run", "C:\\dev\\mcps\\jira-mcp-server\\src\\index.ts"],
+      "command": "npx",
+      "args": ["-y", "@carmeloricarte/jira-mcp-server"],
       "env": {
         "JIRA_HOST": "your-company.atlassian.net",
         "JIRA_EMAIL": "your-email@example.com",
@@ -133,30 +105,12 @@ bun install
 - **macOS:** `~/Library/Application Support/Cursor/User/globalStorage/cursor.mcp/mcp.json`
 - **Windows:** `%APPDATA%\Cursor\User\globalStorage\cursor.mcp\mcp.json`
 
-**macOS:**
 ```json
 {
   "mcpServers": {
     "jira": {
-      "command": "bun",
-      "args": ["run", "/Users/youruser/path/to/jira-mcp-server/src/index.ts"],
-      "env": {
-        "JIRA_HOST": "your-company.atlassian.net",
-        "JIRA_EMAIL": "your-email@example.com",
-        "JIRA_API_TOKEN": "your-api-token"
-      }
-    }
-  }
-}
-```
-
-**Windows:**
-```json
-{
-  "mcpServers": {
-    "jira": {
-      "command": "bun",
-      "args": ["run", "C:\\dev\\mcps\\jira-mcp-server\\src\\index.ts"],
+      "command": "npx",
+      "args": ["-y", "@carmeloricarte/jira-mcp-server"],
       "env": {
         "JIRA_HOST": "your-company.atlassian.net",
         "JIRA_EMAIL": "your-email@example.com",
@@ -175,33 +129,13 @@ bun install
 - **macOS:** `~/.config/zed/settings.json`
 - **Windows:** `%APPDATA%\Zed\settings.json`
 
-**macOS:**
 ```json
 {
   "language_models": {
     "mcp_servers": {
       "jira": {
-        "command": "bun",
-        "args": ["run", "/Users/youruser/path/to/jira-mcp-server/src/index.ts"],
-        "env": {
-          "JIRA_HOST": "your-company.atlassian.net",
-          "JIRA_EMAIL": "your-email@example.com",
-          "JIRA_API_TOKEN": "your-api-token"
-        }
-      }
-    }
-  }
-}
-```
-
-**Windows:**
-```json
-{
-  "language_models": {
-    "mcp_servers": {
-      "jira": {
-        "command": "bun",
-        "args": ["run", "C:\\dev\\mcps\\jira-mcp-server\\src\\index.ts"],
+        "command": "npx",
+        "args": ["-y", "@carmeloricarte/jira-mcp-server"],
         "env": {
           "JIRA_HOST": "your-company.atlassian.net",
           "JIRA_EMAIL": "your-email@example.com",
@@ -221,32 +155,13 @@ bun install
 - **macOS/Linux:** `~/.config/opencode/config.json`
 - **Windows:** `%USERPROFILE%\.config\opencode\config.json`
 
-**macOS/Linux:**
 ```json
 {
   "mcp_servers": {
     "jira": {
       "type": "stdio",
-      "command": "bun",
-      "args": ["run", "/Users/youruser/path/to/jira-mcp-server/src/index.ts"],
-      "env": {
-        "JIRA_HOST": "your-company.atlassian.net",
-        "JIRA_EMAIL": "your-email@example.com",
-        "JIRA_API_TOKEN": "your-api-token"
-      }
-    }
-  }
-}
-```
-
-**Windows:**
-```json
-{
-  "mcp_servers": {
-    "jira": {
-      "type": "stdio",
-      "command": "bun",
-      "args": ["run", "C:\\dev\\mcps\\jira-mcp-server\\src\\index.ts"],
+      "command": "npx",
+      "args": ["-y", "@carmeloricarte/jira-mcp-server"],
       "env": {
         "JIRA_HOST": "your-company.atlassian.net",
         "JIRA_EMAIL": "your-email@example.com",
@@ -265,32 +180,13 @@ bun install
 - **macOS/Linux:** `~/.codex/config.json`
 - **Windows:** `%USERPROFILE%\.codex\config.json`
 
-**macOS/Linux:**
 ```json
 {
   "mcpServers": {
     "jira": {
       "type": "stdio",
-      "command": "bun",
-      "args": ["run", "/Users/youruser/path/to/jira-mcp-server/src/index.ts"],
-      "env": {
-        "JIRA_HOST": "your-company.atlassian.net",
-        "JIRA_EMAIL": "your-email@example.com",
-        "JIRA_API_TOKEN": "your-api-token"
-      }
-    }
-  }
-}
-```
-
-**Windows:**
-```json
-{
-  "mcpServers": {
-    "jira": {
-      "type": "stdio",
-      "command": "bun",
-      "args": ["run", "C:\\dev\\mcps\\jira-mcp-server\\src\\index.ts"],
+      "command": "npx",
+      "args": ["-y", "@carmeloricarte/jira-mcp-server"],
       "env": {
         "JIRA_HOST": "your-company.atlassian.net",
         "JIRA_EMAIL": "your-email@example.com",
@@ -309,30 +205,12 @@ bun install
 - **macOS:** `~/.codeium/windsurf/mcp_config.json`
 - **Windows:** `%USERPROFILE%\.codeium\windsurf\mcp_config.json`
 
-**macOS:**
 ```json
 {
   "mcpServers": {
     "jira": {
-      "command": "bun",
-      "args": ["run", "/Users/youruser/path/to/jira-mcp-server/src/index.ts"],
-      "env": {
-        "JIRA_HOST": "your-company.atlassian.net",
-        "JIRA_EMAIL": "your-email@example.com",
-        "JIRA_API_TOKEN": "your-api-token"
-      }
-    }
-  }
-}
-```
-
-**Windows:**
-```json
-{
-  "mcpServers": {
-    "jira": {
-      "command": "bun",
-      "args": ["run", "C:\\dev\\mcps\\jira-mcp-server\\src\\index.ts"],
+      "command": "npx",
+      "args": ["-y", "@carmeloricarte/jira-mcp-server"],
       "env": {
         "JIRA_HOST": "your-company.atlassian.net",
         "JIRA_EMAIL": "your-email@example.com",
@@ -375,6 +253,14 @@ Move PROJ-123 to "In Progress"
 
 ## Development
 
+### Clone and install dependencies
+
+```bash
+git clone https://github.com/carmeloricarte/jira-mcp-server.git
+cd jira-mcp-server
+bun install
+```
+
 ### Run tests
 
 ```bash
@@ -402,9 +288,9 @@ bun run start
 
 ### Server not starting
 
-1. Verify Bun is installed: `bun --version`
-2. Verify dependencies are installed: `bun install`
-3. Check the path to `index.ts` is correct in your config
+1. Verify Node.js 18+ or Bun is installed: `node --version` or `bun --version`
+2. Try running manually: `npx -y @carmeloricarte/jira-mcp-server` or `bunx @carmeloricarte/jira-mcp-server`
+3. Check for any error messages in your MCP client logs
 
 ### Authentication errors
 
@@ -415,6 +301,29 @@ bun run start
 ### Empty results from list_issues
 
 The server includes default fields (summary, status, priority, issuetype, assignee, updated). If you need additional fields, pass them in the `fields` parameter.
+
+---
+
+## Contributing
+
+Contributions are welcome! If you'd like to contribute to this project:
+
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
+3. **Commit** your changes (`git commit -m 'feat: add amazing feature'`)
+4. **Push** to the branch (`git push origin feature/amazing-feature`)
+5. **Open** a Pull Request
+
+### Guidelines
+
+- Follow the existing code style
+- Write tests for new features
+- Update documentation as needed
+- Use [Conventional Commits](https://www.conventionalcommits.org/) for commit messages
+
+### Reporting Issues
+
+Found a bug or have a feature request? Please [open an issue](https://github.com/carmeloricarte/jira-mcp-server/issues) with as much detail as possible.
 
 ---
 
