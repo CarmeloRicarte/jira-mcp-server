@@ -1,6 +1,6 @@
 {
   "name": "@carmeloricarte/jira-mcp-server",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Model Context Protocol (MCP) server for Jira integration with Claude Code and AI assistants. Provides tools to interact with Jira API: create and manage issues, sprints, boards, projects and workflows.",
   "author": "Carmelo Ricarte Rocamora",
   "license": "MIT",
