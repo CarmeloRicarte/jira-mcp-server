@@ -49,6 +49,30 @@ bun install -g @carmeloricarte/jira-mcp-server
 
 > **Note:** All examples below use `npx` (Node.js). If you prefer Bun, replace `"command": "npx"` with `"command": "bunx"` and remove the `"-y"` from args.
 
+### ⚠️ Windows Configuration
+
+On Windows, you must wrap `npx` or `bunx` commands with `cmd /c`. Use this format:
+
+```json
+{
+  "command": "cmd",
+  "args": ["/c", "npx", "-y", "@carmeloricarte/jira-mcp-server"]
+}
+```
+
+Or with Bun:
+
+```json
+{
+  "command": "cmd",
+  "args": ["/c", "bunx", "@carmeloricarte/jira-mcp-server"]
+}
+```
+
+> **Important:** The package name must always be the **last argument** in the args array.
+
+---
+
 ### Claude Code
 
 **Config file location:**
