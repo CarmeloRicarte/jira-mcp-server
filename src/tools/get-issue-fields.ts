@@ -1,22 +1,20 @@
 import { z } from "zod";
 import type { JiraClient } from "../client/jira-client";
 
-export const getIssueFieldsSchema = {
+export const getIssueFieldsSchema = z.object({
   issue_key: z.string().describe("Issue key (e.g., 'PROJ-123') or ID"),
   include_custom: z
     .boolean()
     .optional()
     .default(true)
     .describe("Include custom fields in the response"),
-};
+});
 
-export type GetIssueFieldsInput = z.infer<
-  z.ZodObject<typeof getIssueFieldsSchema>
->;
+export type GetIssueFieldsInput = z.infer<typeof getIssueFieldsSchema>;
 
 export async function getIssueFields(
   client: JiraClient,
-  input: GetIssueFieldsInput
+  input: GetIssueFieldsInput,
 ): Promise<string> {
   // Get field metadata to map IDs to names
   const [issue, fieldsMeta] = await Promise.all([
@@ -26,7 +24,7 @@ export async function getIssueFields(
 
   // Create a map of field ID to field name
   const fieldNameMap = new Map(
-    fieldsMeta.map((f) => [f.id, { name: f.name, custom: f.custom }])
+    fieldsMeta.map((f) => [f.id, { name: f.name, custom: f.custom }]),
   );
 
   // Process all fields from the issue
@@ -57,7 +55,9 @@ export async function getIssueFields(
     if (typeof value === "object" && value !== null) {
       // Handle ADF documents (description, custom text fields)
       if ("type" in value && value.type === "doc") {
-        processedValue = client.adfToText(value as Parameters<typeof client.adfToText>[0]);
+        processedValue = client.adfToText(
+          value as Parameters<typeof client.adfToText>[0],
+        );
       }
       // Handle user objects
       else if ("displayName" in value) {
@@ -91,6 +91,6 @@ export async function getIssueFields(
       fields: processedFields,
     },
     null,
-    2
+    2,
   );
 }

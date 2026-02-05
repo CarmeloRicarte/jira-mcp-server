@@ -1,26 +1,25 @@
 import { z } from "zod";
 import type { JiraClient } from "../client/jira-client";
 
-export const getTransitionsSchema = {
+export const getTransitionsSchema = z.object({
   issue_key: z.string().describe("Issue key (e.g., 'PROJ-123') or ID"),
-};
+});
 
-export const transitionIssueSchema = {
+export const transitionIssueSchema = z.object({
   issue_key: z.string().describe("Issue key (e.g., 'PROJ-123') or ID"),
   transition_id: z.string().describe("ID of the transition to perform"),
-  comment: z.string().optional().describe("Optional comment to add with the transition"),
-};
+  comment: z
+    .string()
+    .optional()
+    .describe("Optional comment to add with the transition"),
+});
 
-export type GetTransitionsInput = z.infer<
-  z.ZodObject<typeof getTransitionsSchema>
->;
-export type TransitionIssueInput = z.infer<
-  z.ZodObject<typeof transitionIssueSchema>
->;
+export type GetTransitionsInput = z.infer<typeof getTransitionsSchema>;
+export type TransitionIssueInput = z.infer<typeof transitionIssueSchema>;
 
 export async function getTransitions(
   client: JiraClient,
-  input: GetTransitionsInput
+  input: GetTransitionsInput,
 ): Promise<string> {
   const result = await client.getTransitions(input.issue_key);
 
@@ -37,18 +36,18 @@ export async function getTransitions(
       available_transitions: transitions,
     },
     null,
-    2
+    2,
   );
 }
 
 export async function transitionIssue(
   client: JiraClient,
-  input: TransitionIssueInput
+  input: TransitionIssueInput,
 ): Promise<string> {
   await client.transitionIssue(
     input.issue_key,
     input.transition_id,
-    input.comment
+    input.comment,
   );
 
   // Get the updated issue to confirm the transition
@@ -61,6 +60,6 @@ export async function transitionIssue(
       message: `Issue transitioned successfully to '${issue.fields.status.name}'`,
     },
     null,
-    2
+    2,
   );
 }

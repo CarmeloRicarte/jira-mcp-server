@@ -22,10 +22,12 @@ export function createMcpServer(client: JiraClient): McpServer {
   });
 
   // Tool: Get Issue
-  server.tool(
+  server.registerTool(
     "get_issue",
-    "Get detailed information about a specific Jira issue",
-    getIssueSchema,
+    {
+      description: "Get detailed information about a specific Jira issue",
+      inputSchema: getIssueSchema,
+    },
     async (input) => {
       try {
         const result = await getIssue(client, input);
@@ -37,14 +39,16 @@ export function createMcpServer(client: JiraClient): McpServer {
           isError: true,
         };
       }
-    }
+    },
   );
 
   // Tool: List Issues (JQL Search)
-  server.tool(
+  server.registerTool(
     "list_issues",
-    "Search for issues using JQL (Jira Query Language)",
-    listIssuesSchema,
+    {
+      description: "Search for issues using JQL (Jira Query Language)",
+      inputSchema: listIssuesSchema,
+    },
     async (input) => {
       try {
         const result = await listIssues(client, input);
@@ -56,14 +60,17 @@ export function createMcpServer(client: JiraClient): McpServer {
           isError: true,
         };
       }
-    }
+    },
   );
 
   // Tool: Get Issue Fields (including custom fields)
-  server.tool(
+  server.registerTool(
     "get_issue_fields",
-    "Get all fields (including custom fields) for an issue with their names and values",
-    getIssueFieldsSchema,
+    {
+      description:
+        "Get all fields (including custom fields) for an issue with their names and values",
+      inputSchema: getIssueFieldsSchema,
+    },
     async (input) => {
       try {
         const result = await getIssueFields(client, input);
@@ -75,14 +82,16 @@ export function createMcpServer(client: JiraClient): McpServer {
           isError: true,
         };
       }
-    }
+    },
   );
 
   // Tool: Add Comment
-  server.tool(
+  server.registerTool(
     "add_comment",
-    "Add a comment to a Jira issue",
-    addCommentSchema,
+    {
+      description: "Add a comment to a Jira issue",
+      inputSchema: addCommentSchema,
+    },
     async (input) => {
       try {
         const result = await addComment(client, input);
@@ -94,14 +103,16 @@ export function createMcpServer(client: JiraClient): McpServer {
           isError: true,
         };
       }
-    }
+    },
   );
 
   // Tool: Get Transitions
-  server.tool(
+  server.registerTool(
     "get_transitions",
-    "Get available status transitions for an issue",
-    getTransitionsSchema,
+    {
+      description: "Get available status transitions for an issue",
+      inputSchema: getTransitionsSchema,
+    },
     async (input) => {
       try {
         const result = await getTransitions(client, input);
@@ -113,14 +124,16 @@ export function createMcpServer(client: JiraClient): McpServer {
           isError: true,
         };
       }
-    }
+    },
   );
 
   // Tool: Transition Issue
-  server.tool(
+  server.registerTool(
     "transition_issue",
-    "Transition an issue to a new status",
-    transitionIssueSchema,
+    {
+      description: "Transition an issue to a new status",
+      inputSchema: transitionIssueSchema,
+    },
     async (input) => {
       try {
         const result = await transitionIssue(client, input);
@@ -132,7 +145,7 @@ export function createMcpServer(client: JiraClient): McpServer {
           isError: true,
         };
       }
-    }
+    },
   );
 
   return server;

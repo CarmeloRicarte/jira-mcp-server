@@ -1,16 +1,18 @@
 import { z } from "zod";
 import type { JiraClient } from "../client/jira-client";
 
-export const addCommentSchema = {
+export const addCommentSchema = z.object({
   issue_key: z.string().describe("Issue key (e.g., 'PROJ-123') or ID"),
-  body: z.string().describe("Comment text (plain text, will be converted to ADF)"),
-};
+  body: z
+    .string()
+    .describe("Comment text (plain text, will be converted to ADF)"),
+});
 
-export type AddCommentInput = z.infer<z.ZodObject<typeof addCommentSchema>>;
+export type AddCommentInput = z.infer<typeof addCommentSchema>;
 
 export async function addComment(
   client: JiraClient,
-  input: AddCommentInput
+  input: AddCommentInput,
 ): Promise<string> {
   const comment = await client.addComment(input.issue_key, input.body);
 
@@ -22,6 +24,6 @@ export async function addComment(
       body: client.adfToText(comment.body),
     },
     null,
-    2
+    2,
   );
 }

@@ -1,7 +1,7 @@
 import { z } from "zod";
 import type { JiraClient } from "../client/jira-client";
 
-export const listIssuesSchema = {
+export const listIssuesSchema = z.object({
   jql: z.string().describe("JQL query to search issues"),
   max_results: z
     .number()
@@ -16,9 +16,9 @@ export const listIssuesSchema = {
     .array(z.string())
     .optional()
     .describe("Specific fields to retrieve"),
-};
+});
 
-export type ListIssuesInput = z.infer<z.ZodObject<typeof listIssuesSchema>>;
+export type ListIssuesInput = z.infer<typeof listIssuesSchema>;
 
 const DEFAULT_FIELDS = [
   "summary",
@@ -31,7 +31,7 @@ const DEFAULT_FIELDS = [
 
 export async function listIssues(
   client: JiraClient,
-  input: ListIssuesInput
+  input: ListIssuesInput,
 ): Promise<string> {
   const maxResults = Math.min(input.max_results ?? 20, 100);
   const fields = input.fields ?? DEFAULT_FIELDS;
@@ -60,6 +60,6 @@ export async function listIssues(
       issues,
     },
     null,
-    2
+    2,
   );
 }

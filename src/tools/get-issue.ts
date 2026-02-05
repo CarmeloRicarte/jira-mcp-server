@@ -1,7 +1,7 @@
 import { z } from "zod";
 import type { JiraClient } from "../client/jira-client";
 
-export const getIssueSchema = {
+export const getIssueSchema = z.object({
   issue_key: z.string().describe("Issue key (e.g., 'PROJ-123') or ID"),
   fields: z
     .array(z.string())
@@ -11,15 +11,19 @@ export const getIssueSchema = {
     .array(z.string())
     .optional()
     .describe("Fields to expand (e.g., 'changelog', 'renderedFields')"),
-};
+});
 
-export type GetIssueInput = z.infer<z.ZodObject<typeof getIssueSchema>>;
+export type GetIssueInput = z.infer<typeof getIssueSchema>;
 
 export async function getIssue(
   client: JiraClient,
-  input: GetIssueInput
+  input: GetIssueInput,
 ): Promise<string> {
-  const issue = await client.getIssue(input.issue_key, input.fields, input.expand);
+  const issue = await client.getIssue(
+    input.issue_key,
+    input.fields,
+    input.expand,
+  );
 
   // Extract and format relevant information
   const result = {
