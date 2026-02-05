@@ -1,4 +1,4 @@
-import { describe, it, expect, mock, beforeEach } from "bun:test";
+import { beforeEach, describe, expect, it } from "bun:test";
 import { JiraClient, JiraClientError } from "../../src/client/jira-client.js";
 
 describe("JiraClient", () => {

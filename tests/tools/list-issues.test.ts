@@ -1,6 +1,6 @@
-import { describe, it, expect, mock, beforeEach } from "bun:test";
-import { listIssues } from "../../src/tools/list-issues.js";
+import { beforeEach, describe, expect, it, mock } from "bun:test";
 import type { JiraClient } from "../../src/client/jira-client.js";
+import { listIssues } from "../../src/tools/list-issues.js";
 import type { JiraSearchResult } from "../../src/types/jira.js";
 
 describe("listIssues", () => {
@@ -101,7 +101,14 @@ describe("listIssues", () => {
 
     expect(searchMock).toHaveBeenCalledWith("project = PROJ", {
       maxResults: 100,
-      fields: ["summary", "status", "priority", "issuetype", "assignee", "updated"],
+      fields: [
+        "summary",
+        "status",
+        "priority",
+        "issuetype",
+        "assignee",
+        "updated",
+      ],
       nextPageToken: undefined,
     });
   });
@@ -118,7 +125,14 @@ describe("listIssues", () => {
 
     expect(searchMock).toHaveBeenCalledWith("project = PROJ", {
       maxResults: 25,
-      fields: ["summary", "status", "priority", "issuetype", "assignee", "updated"],
+      fields: [
+        "summary",
+        "status",
+        "priority",
+        "issuetype",
+        "assignee",
+        "updated",
+      ],
       nextPageToken: "eyJhbGciOiJIUzI1NiJ9.page2",
     });
   });

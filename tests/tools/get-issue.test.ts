@@ -1,6 +1,6 @@
-import { describe, it, expect, mock, beforeEach } from "bun:test";
-import { getIssue } from "../../src/tools/get-issue.js";
+import { beforeEach, describe, expect, it, mock } from "bun:test";
 import type { JiraClient } from "../../src/client/jira-client.js";
+import { getIssue } from "../../src/tools/get-issue.js";
 import type { JiraIssue } from "../../src/types/jira.js";
 
 describe("getIssue", () => {
@@ -111,7 +111,7 @@ describe("getIssue", () => {
     expect(getIssueMock).toHaveBeenCalledWith(
       "PROJ-123",
       ["summary", "status"],
-      ["changelog"]
+      ["changelog"],
     );
   });
 

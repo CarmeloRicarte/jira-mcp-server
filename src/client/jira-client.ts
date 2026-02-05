@@ -1,17 +1,17 @@
 import type {
+  JiraAdfDocument,
+  JiraComment,
   JiraConfig,
   JiraIssue,
   JiraSearchResult,
   JiraTransitionsResponse,
-  JiraComment,
-  JiraAdfDocument,
 } from "../types/jira";
 
 export class JiraClientError extends Error {
   constructor(
     message: string,
     public readonly statusCode: number,
-    public readonly endpoint: string
+    public readonly endpoint: string,
   ) {
     super(message);
     this.name = "JiraClientError";
@@ -22,7 +22,7 @@ export class JiraClient {
   private readonly baseUrl: string;
   private readonly authHeader: string;
 
-  constructor(private readonly config: JiraConfig) {
+  constructor(readonly config: JiraConfig) {
     this.baseUrl = `https://${config.host}/rest/api/3`;
     this.authHeader = this.createAuthHeader(config.email, config.apiToken);
   }
@@ -34,7 +34,7 @@ export class JiraClient {
 
   private async request<T>(
     endpoint: string,
-    options: RequestInit = {}
+    options: RequestInit = {},
   ): Promise<T> {
     const url = `${this.baseUrl}${endpoint}`;
 
@@ -53,7 +53,7 @@ export class JiraClient {
       throw new JiraClientError(
         `Jira API error: ${errorBody}`,
         response.status,
-        endpoint
+        endpoint,
       );
     }
 
@@ -71,7 +71,7 @@ export class JiraClient {
   async getIssue(
     issueIdOrKey: string,
     fields?: string[],
-    expand?: string[]
+    expand?: string[],
   ): Promise<JiraIssue> {
     const params = new URLSearchParams();
 
@@ -100,7 +100,7 @@ export class JiraClient {
       fields?: string[];
       expand?: string[];
       nextPageToken?: string;
-    } = {}
+    } = {},
   ): Promise<JiraSearchResult> {
     const { maxResults = 50, fields, expand, nextPageToken } = options;
 
@@ -130,10 +130,9 @@ export class JiraClient {
    */
   async addComment(
     issueIdOrKey: string,
-    body: string | JiraAdfDocument
+    body: string | JiraAdfDocument,
   ): Promise<JiraComment> {
-    const commentBody =
-      typeof body === "string" ? this.textToAdf(body) : body;
+    const commentBody = typeof body === "string" ? this.textToAdf(body) : body;
 
     return this.request<JiraComment>(`/issue/${issueIdOrKey}/comment`, {
       method: "POST",
@@ -146,7 +145,7 @@ export class JiraClient {
    */
   async getTransitions(issueIdOrKey: string): Promise<JiraTransitionsResponse> {
     return this.request<JiraTransitionsResponse>(
-      `/issue/${issueIdOrKey}/transitions`
+      `/issue/${issueIdOrKey}/transitions`,
     );
   }
 
@@ -156,7 +155,7 @@ export class JiraClient {
   async transitionIssue(
     issueIdOrKey: string,
     transitionId: string,
-    comment?: string
+    comment?: string,
   ): Promise<void> {
     const body: Record<string, unknown> = {
       transition: { id: transitionId },
@@ -206,10 +205,20 @@ export class JiraClient {
     if (!adf) return "";
     if (typeof adf === "string") return adf;
 
-    const extractText = (node: { type: string; content?: unknown[]; text?: string }): string => {
+    const extractText = (node: {
+      type: string;
+      content?: unknown[];
+      text?: string;
+    }): string => {
       if (node.text) return node.text;
       if (!node.content || !Array.isArray(node.content)) return "";
-      return node.content.map((child) => extractText(child as { type: string; content?: unknown[]; text?: string })).join("\n");
+      return node.content
+        .map((child) =>
+          extractText(
+            child as { type: string; content?: unknown[]; text?: string },
+          ),
+        )
+        .join("\n");
     };
 
     return extractText(adf);

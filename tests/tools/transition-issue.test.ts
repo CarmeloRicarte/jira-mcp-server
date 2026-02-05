@@ -1,10 +1,13 @@
-import { describe, it, expect, mock, beforeEach } from "bun:test";
+import { beforeEach, describe, expect, it, mock } from "bun:test";
+import type { JiraClient } from "../../src/client/jira-client.js";
 import {
   getTransitions,
   transitionIssue,
 } from "../../src/tools/transition-issue.js";
-import type { JiraClient } from "../../src/client/jira-client.js";
-import type { JiraTransitionsResponse, JiraIssue } from "../../src/types/jira.js";
+import type {
+  JiraIssue,
+  JiraTransitionsResponse,
+} from "../../src/types/jira.js";
 
 describe("getTransitions", () => {
   const mockTransitions: JiraTransitionsResponse = {
@@ -130,7 +133,7 @@ describe("transitionIssue", () => {
     expect(transitionMock).toHaveBeenCalledWith(
       "PROJ-123",
       "11",
-      "Starting work on this"
+      "Starting work on this",
     );
   });
 

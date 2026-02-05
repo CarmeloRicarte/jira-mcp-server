@@ -1,16 +1,16 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { JiraClient } from "./client/jira-client";
 import {
-  getIssue,
-  getIssueSchema,
-  listIssues,
-  listIssuesSchema,
-  getIssueFields,
-  getIssueFieldsSchema,
   addComment,
   addCommentSchema,
+  getIssue,
+  getIssueFields,
+  getIssueFieldsSchema,
+  getIssueSchema,
   getTransitions,
   getTransitionsSchema,
+  listIssues,
+  listIssuesSchema,
   transitionIssue,
   transitionIssueSchema,
 } from "./tools";

@@ -47,6 +47,9 @@
     "test": "bun test",
     "test:coverage": "bun test --coverage",
     "typecheck": "tsc --noEmit",
+    "lint": "biome lint --write .",
+    "format": "biome format --write .",
+    "check": "biome check --write .",
     "add-shebang": "node scripts/add-shebang.js",
     "prepublishOnly": "bun run build && bun run add-shebang"
   },
@@ -55,6 +58,7 @@
     "zod": "^3.24.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.3.14",
     "@types/bun": "latest"
   }
 }

@@ -1,6 +1,6 @@
-import { describe, it, expect, mock, beforeEach } from "bun:test";
-import { addComment } from "../../src/tools/add-comment.js";
+import { beforeEach, describe, expect, it, mock } from "bun:test";
 import type { JiraClient } from "../../src/client/jira-client.js";
+import { addComment } from "../../src/tools/add-comment.js";
 import type { JiraComment } from "../../src/types/jira.js";
 
 describe("addComment", () => {
