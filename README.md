@@ -6,12 +6,16 @@ A Model Context Protocol (MCP) server for Jira Cloud that enables AI assistants 
 
 ## Features
 
-- **get_issue** - Get detailed information about a specific Jira issue
-- **list_issues** - Search for issues using JQL (Jira Query Language)
-- **get_issue_fields** - Get all fields (including custom fields) for an issue
-- **add_comment** - Add a comment to a Jira issue
-- **get_transitions** - Get available status transitions for an issue
-- **transition_issue** - Transition an issue to a new status
+| Tool | Description |
+|------|-------------|
+| **create_issue** | Create a new Jira issue (Story, Bug, Task, Epic, etc.) |
+| **get_issue** | Get detailed information about a specific Jira issue |
+| **list_issues** | Search for issues using JQL (Jira Query Language) |
+| **get_issue_fields** | Get all fields (including custom fields) for an issue |
+| **update_issue** | Update an existing issue (summary, description, assignee, priority, labels, custom fields) |
+| **add_comment** | Add a comment to a Jira issue |
+| **get_transitions** | Get available status transitions for an issue |
+| **transition_issue** | Transition an issue to a new status |
 
 ## Prerequisites
 
@@ -249,6 +253,16 @@ Or with Bun:
 
 ## Tool Examples
 
+### Create Issue
+
+```
+Create a new Story in project PROJ with title "Implement user authentication"
+```
+
+```
+Create an Epic in PROJ called "[EPIC] Payment System" with description "Complete payment integration"
+```
+
 ### Get Issue
 
 ```
@@ -259,6 +273,16 @@ Get issue PROJ-123
 
 ```
 Search for issues: project = PROJ AND status = "In Progress"
+```
+
+### Update Issue
+
+```
+Update PROJ-123: change priority to High and add labels "urgent", "frontend"
+```
+
+```
+Update the description of PROJ-123 to "Updated requirements..."
 ```
 
 ### Add Comment
