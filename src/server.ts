@@ -3,6 +3,8 @@ import type { JiraClient } from "./client/jira-client";
 import {
   addComment,
   addCommentSchema,
+  createIssue,
+  createIssueSchema,
   getIssue,
   getIssueFields,
   getIssueFieldsSchema,
@@ -13,6 +15,8 @@ import {
   listIssuesSchema,
   transitionIssue,
   transitionIssueSchema,
+  updateIssue,
+  updateIssueSchema,
 } from "./tools";
 
 export function createMcpServer(client: JiraClient): McpServer {
@@ -20,6 +24,28 @@ export function createMcpServer(client: JiraClient): McpServer {
     name: "jira-cloud",
     version: "1.0.0",
   });
+
+  // Tool: Create Issue
+  server.registerTool(
+    "create_issue",
+    {
+      description:
+        "Create a new Jira issue (Story, Bug, Task, Epic, etc.)",
+      inputSchema: createIssueSchema,
+    },
+    async (input) => {
+      try {
+        const result = await createIssue(client, input);
+        return { content: [{ type: "text", text: result }] };
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        return {
+          content: [{ type: "text", text: `Error: ${message}` }],
+          isError: true,
+        };
+      }
+    },
+  );
 
   // Tool: Get Issue
   server.registerTool(
@@ -137,6 +163,28 @@ export function createMcpServer(client: JiraClient): McpServer {
     async (input) => {
       try {
         const result = await transitionIssue(client, input);
+        return { content: [{ type: "text", text: result }] };
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        return {
+          content: [{ type: "text", text: `Error: ${message}` }],
+          isError: true,
+        };
+      }
+    },
+  );
+
+  // Tool: Update Issue
+  server.registerTool(
+    "update_issue",
+    {
+      description:
+        "Update an existing Jira issue (summary, description, assignee, priority, labels, custom fields)",
+      inputSchema: updateIssueSchema,
+    },
+    async (input) => {
+      try {
+        const result = await updateIssue(client, input);
         return { content: [{ type: "text", text: result }] };
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);

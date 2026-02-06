@@ -124,3 +124,31 @@ export interface JiraConfig {
 export interface JiraClientOptions {
   config: JiraConfig;
 }
+
+export interface JiraCreateIssueInput {
+  project_key: string;
+  summary: string;
+  issue_type: string;
+  description?: string;
+  assignee_id?: string;
+  priority?: string;
+  labels?: string[];
+  parent_key?: string;
+  additional_fields?: Record<string, unknown>;
+}
+
+export interface JiraUpdateIssueInput {
+  issue_key: string;
+  summary?: string;
+  description?: string;
+  assignee_id?: string;
+  priority?: string;
+  labels?: string[];
+  additional_fields?: Record<string, unknown>;
+}
+
+export interface JiraCreateIssueResponse {
+  id: string;
+  key: string;
+  self: string;
+}

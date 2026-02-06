@@ -2,9 +2,12 @@ import type {
   JiraAdfDocument,
   JiraComment,
   JiraConfig,
+  JiraCreateIssueInput,
+  JiraCreateIssueResponse,
   JiraIssue,
   JiraSearchResult,
   JiraTransitionsResponse,
+  JiraUpdateIssueInput,
 } from "../types/jira";
 
 export class JiraClientError extends Error {
@@ -180,6 +183,72 @@ export class JiraClient {
     Array<{ id: string; name: string; custom: boolean; schema?: unknown }>
   > {
     return this.request("/field");
+  }
+
+  /**
+   * Create a new issue
+   */
+  async createIssue(input: JiraCreateIssueInput): Promise<JiraCreateIssueResponse> {
+    const fields: Record<string, unknown> = {
+      project: { key: input.project_key },
+      summary: input.summary,
+      issuetype: { name: input.issue_type },
+    };
+
+    if (input.description) {
+      fields.description = this.textToAdf(input.description);
+    }
+    if (input.assignee_id) {
+      fields.assignee = { accountId: input.assignee_id };
+    }
+    if (input.priority) {
+      fields.priority = { name: input.priority };
+    }
+    if (input.labels) {
+      fields.labels = input.labels;
+    }
+    if (input.parent_key) {
+      fields.parent = { key: input.parent_key };
+    }
+    if (input.additional_fields) {
+      Object.assign(fields, input.additional_fields);
+    }
+
+    return this.request<JiraCreateIssueResponse>("/issue", {
+      method: "POST",
+      body: JSON.stringify({ fields }),
+    });
+  }
+
+  /**
+   * Update an existing issue
+   */
+  async updateIssue(input: JiraUpdateIssueInput): Promise<void> {
+    const fields: Record<string, unknown> = {};
+
+    if (input.summary !== undefined) {
+      fields.summary = input.summary;
+    }
+    if (input.description !== undefined) {
+      fields.description = input.description ? this.textToAdf(input.description) : null;
+    }
+    if (input.assignee_id !== undefined) {
+      fields.assignee = input.assignee_id ? { accountId: input.assignee_id } : null;
+    }
+    if (input.priority !== undefined) {
+      fields.priority = input.priority ? { name: input.priority } : null;
+    }
+    if (input.labels !== undefined) {
+      fields.labels = input.labels;
+    }
+    if (input.additional_fields) {
+      Object.assign(fields, input.additional_fields);
+    }
+
+    await this.request<void>(`/issue/${input.issue_key}`, {
+      method: "PUT",
+      body: JSON.stringify({ fields }),
+    });
   }
 
   /**
