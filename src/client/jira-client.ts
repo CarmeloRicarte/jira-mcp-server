@@ -1,3 +1,4 @@
+import type { Config } from "../config";
 import type {
   JiraAdfDocument,
   JiraComment,
@@ -28,6 +29,14 @@ export class JiraClient {
   constructor(readonly config: JiraConfig) {
     this.baseUrl = `https://${config.host}/rest/api/3`;
     this.authHeader = this.createAuthHeader(config.email, config.apiToken);
+  }
+
+  static fromConfig(config: Config): JiraClient {
+    return new JiraClient({
+      host: config.host,
+      email: config.email,
+      apiToken: config.apiToken,
+    });
   }
 
   private createAuthHeader(email: string, token: string): string {
