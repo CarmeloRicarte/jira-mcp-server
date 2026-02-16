@@ -13,6 +13,7 @@ A Model Context Protocol (MCP) server for Jira Cloud that enables AI assistants 
 | **list_issues** | Search for issues using JQL (Jira Query Language) |
 | **get_issue_fields** | Get all fields (including custom fields) for an issue |
 | **update_issue** | Update an existing issue (summary, description, assignee, priority, labels, custom fields) |
+| **delete_issue** | Delete a Jira issue by key or ID (with optional subtask deletion) |
 | **add_comment** | Add a comment to a Jira issue |
 | **get_transitions** | Get available status transitions for an issue |
 | **transition_issue** | Transition an issue to a new status |
@@ -283,6 +284,16 @@ Update PROJ-123: change priority to High and add labels "urgent", "frontend"
 
 ```
 Update the description of PROJ-123 to "Updated requirements..."
+```
+
+### Delete Issue
+
+```
+Delete issue PROJ-123
+```
+
+```
+Delete PROJ-456 and all its subtasks
 ```
 
 ### Add Comment

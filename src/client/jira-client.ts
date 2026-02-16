@@ -261,6 +261,23 @@ export class JiraClient {
   }
 
   /**
+   * Delete an issue by key or ID
+   */
+  async deleteIssue(
+    issueIdOrKey: string,
+    deleteSubtasks = false,
+  ): Promise<void> {
+    const params = new URLSearchParams();
+    if (deleteSubtasks) {
+      params.set("deleteSubtasks", "true");
+    }
+    const queryString = params.toString();
+    const endpoint = `/issue/${issueIdOrKey}${queryString ? `?${queryString}` : ""}`;
+
+    await this.request<void>(endpoint, { method: "DELETE" });
+  }
+
+  /**
    * Convert plain text to Atlassian Document Format (ADF)
    */
   textToAdf(text: string): JiraAdfDocument {

@@ -1,6 +1,7 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { JiraClient } from "../client/jira-client";
 import { createIssue, createIssueSchema } from "./create-issue";
+import { deleteIssue, deleteIssueSchema } from "./delete-issue";
 import { getIssue, getIssueSchema } from "./get-issue";
 import { getIssueFields, getIssueFieldsSchema } from "./get-issue-fields";
 import { listIssues, listIssuesSchema } from "./list-issues";
@@ -78,6 +79,26 @@ export function registerIssueTools(server: McpServer, client: JiraClient) {
     async (input) => {
       try {
         const result = await getIssueFields(client, input);
+        return { content: [{ type: "text", text: result }] };
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        return {
+          content: [{ type: "text", text: `Error: ${message}` }],
+          isError: true,
+        };
+      }
+    },
+  );
+
+  server.registerTool(
+    "delete_issue",
+    {
+      description: "Delete a Jira issue by key or ID",
+      inputSchema: deleteIssueSchema,
+    },
+    async (input) => {
+      try {
+        const result = await deleteIssue(client, input);
         return { content: [{ type: "text", text: result }] };
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
